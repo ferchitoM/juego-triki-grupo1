@@ -19,7 +19,10 @@ public class MainActivity extends AppCompatActivity {
     String[][] tablero = new String[3][3]; //fila, col
     boolean turno = false; //true: X, false: O
     String jugador = "";
+    String ganador = "";
     Button botonIniciarPartida;
+    int contX = 0;
+    int contO = 0;
 
     //col:      0   1   2
     //fila: 0   X   O   O
@@ -103,6 +106,9 @@ public class MainActivity extends AppCompatActivity {
                 //Establecemos algunos valores al inicio de la partida
                 botonIniciarPartida.setText("Iniciar partida");
                 turno = false;
+                ganador = "";
+                contX = 0;
+                contX = 0;
 
                 final int f = fila;
                 final int c = col;
@@ -110,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View view) {
 
-                        if (boton.getText().toString().isEmpty()) {
+                        if (boton.getText().toString().isEmpty() && ganador.isEmpty()) {
                             jugada(f, c);
                             mostrarTablero();
 
@@ -129,24 +135,12 @@ public class MainActivity extends AppCompatActivity {
 
     private void buscarGanador() {
 
-        String valor;
-        int contX = 0;
-        int contO = 0;
-        String ganador = "";
-
         //buscar 3 en linea en las filas
         for (int fila = 0; fila < 3; fila++) {
             for (int col = 0; col < 3; col++) {
-
-                valor = tablero[fila][col];
-                if (!valor.isEmpty()) {
-                    if (valor == "X") contX++;
-                    if (valor == "O") contO++;
-                }
-
-                if (contX == 3) ganador = "X";
-                if (contO == 3) ganador = "O";
+                validarJugada(fila, col);
             }
+            if (!ganador.isEmpty()) break;
             contX = 0;
             contO = 0;
         }
@@ -155,16 +149,9 @@ public class MainActivity extends AppCompatActivity {
             //buscar 3 en linea en las columnas
             for (int col = 0; col < 3; col++) {
                 for (int fila = 0; fila < 3; fila++) {
-
-                    valor = tablero[fila][col];
-                    if (!valor.isEmpty()) {
-                        if (valor == "X") contX++;
-                        if (valor == "O") contO++;
-                    }
-
-                    if (contX == 3) ganador = "X";
-                    if (contO == 3) ganador = "O";
+                    validarJugada(fila, col);
                 }
+                if (!ganador.isEmpty()) break;
                 contX = 0;
                 contO = 0;
             }
@@ -175,36 +162,17 @@ public class MainActivity extends AppCompatActivity {
             int fila;
             for (int col = 0; col < 3; col++) {
                 fila = col;
-
-                valor = tablero[fila][col];
-                if (!valor.isEmpty()) {
-                    if (valor == "X") contX++;
-                    if (valor == "O") contO++;
-                }
-
-                if (contX == 3) ganador = "X";
-                if (contO == 3) ganador = "O";
-
+                validarJugada(fila, col);
             }
             contX = 0;
             contO = 0;
         }
 
         if (ganador == "") {
-
             //buscar 3 en línea en la diagonal 2
             int fila = 0;
             for (int col = 2; col >= 0; col--) {
-
-                valor = tablero[fila][col];
-                if (!valor.isEmpty()) {
-                    if (valor == "X") contX++;
-                    if (valor == "O") contO++;
-                }
-
-                if (contX == 3) ganador = "X";
-                if (contO == 3) ganador = "O";
-
+                validarJugada(fila, col);
                 fila++;
             }
             contX = 0;
@@ -218,6 +186,18 @@ public class MainActivity extends AppCompatActivity {
                     Toast.LENGTH_LONG
             ).show();
         }
+    }
+
+    private void validarJugada(int fila, int col) {
+        String valor = tablero[fila][col];
+
+        if (!valor.isEmpty()) {
+            if (valor == "X") contX++;
+            if (valor == "O") contO++;
+        }
+
+        if (contX == 3) ganador = "X";
+        if (contO == 3) ganador = "O";
     }
 
 }
