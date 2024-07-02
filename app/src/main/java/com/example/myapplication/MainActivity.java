@@ -16,13 +16,14 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    String[][] tablero = new String[3][3]; //fila, col
     boolean turno = false; //true: X, false: O
     String jugador = "";
     String ganador = "";
     Button botonIniciarPartida;
     int contX = 0;
     int contO = 0;
+    int t = 3; // tamaño del tablero = 3x3
+    String[][] tablero = new String[t][t]; //fila, col
 
     //col:      0   1   2
     //fila: 0   X   O   O
@@ -60,16 +61,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void inicializarTablero() {
-        for (int fila = 0; fila <= 2; fila++) {
-            for (int col = 0; col <= 2; col++) {
+        for (int fila = 0; fila < t; fila++) {
+            for (int col = 0; col < t; col++) {
                 tablero[fila][col] = "_";
             }
         }
     }
 
     private void mostrarTablero() {
-        for (int fila = 0; fila <= 2; fila++) {
-            for (int col = 0; col <= 2; col++) {
+        for (int fila = 0; fila < t; fila++) {
+            for (int col = 0; col < t; col++) {
                 System.out.print(tablero[fila][col] + " ");
             }
             System.out.println();
@@ -89,8 +90,8 @@ public class MainActivity extends AppCompatActivity {
     private void inicializarBotones() {
 
         int idBoton;
-        for (int fila = 0; fila < 3; fila++) {
-            for (int col = 0; col < 3; col++) {
+        for (int fila = 0; fila < t; fila++) {
+            for (int col = 0; col < t; col++) {
 
                 idBoton = getResources()
                         .getIdentifier(
@@ -106,6 +107,7 @@ public class MainActivity extends AppCompatActivity {
                 //Establecemos algunos valores al inicio de la partida
                 botonIniciarPartida.setText("Iniciar partida");
                 turno = false;
+                jugador = "";
                 ganador = "";
                 contX = 0;
                 contX = 0;
@@ -136,8 +138,8 @@ public class MainActivity extends AppCompatActivity {
     private void buscarGanador() {
 
         //buscar 3 en linea en las filas
-        for (int fila = 0; fila < 3; fila++) {
-            for (int col = 0; col < 3; col++) {
+        for (int fila = 0; fila < t; fila++) {
+            for (int col = 0; col < t; col++) {
                 validarJugada(fila, col);
             }
             if (!ganador.isEmpty()) break;
@@ -147,8 +149,8 @@ public class MainActivity extends AppCompatActivity {
 
         if (ganador == "") {
             //buscar 3 en linea en las columnas
-            for (int col = 0; col < 3; col++) {
-                for (int fila = 0; fila < 3; fila++) {
+            for (int col = 0; col < t; col++) {
+                for (int fila = 0; fila < t; fila++) {
                     validarJugada(fila, col);
                 }
                 if (!ganador.isEmpty()) break;
@@ -160,7 +162,7 @@ public class MainActivity extends AppCompatActivity {
         if (ganador == "") {
             //buscar 3 en línea en la diagonal 1
             int fila;
-            for (int col = 0; col < 3; col++) {
+            for (int col = 0; col < t; col++) {
                 fila = col;
                 validarJugada(fila, col);
             }
@@ -171,7 +173,7 @@ public class MainActivity extends AppCompatActivity {
         if (ganador == "") {
             //buscar 3 en línea en la diagonal 2
             int fila = 0;
-            for (int col = 2; col >= 0; col--) {
+            for (int col = t-1; col >= 0; col--) {
                 validarJugada(fila, col);
                 fila++;
             }
@@ -185,6 +187,7 @@ public class MainActivity extends AppCompatActivity {
                     "El ganador es: " + ganador,
                     Toast.LENGTH_LONG
             ).show();
+            ganador = "";
         }
     }
 
@@ -196,8 +199,8 @@ public class MainActivity extends AppCompatActivity {
             if (valor == "O") contO++;
         }
 
-        if (contX == 3) ganador = "X";
-        if (contO == 3) ganador = "O";
+        if (contX == t) ganador = "X";
+        if (contO == t) ganador = "O";
     }
 
 }
