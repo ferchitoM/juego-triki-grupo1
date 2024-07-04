@@ -1,9 +1,12 @@
 package com.example.myapplication;
 
+import static java.lang.Thread.sleep;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -55,8 +58,53 @@ public class MainActivity extends AppCompatActivity {
                 inicializarTablero();
                 inicializarBotones();
 
+                cargarBarraProgreso();
+
             }
         });
+
+    }
+
+    private void cargarBarraProgreso() {
+
+        ProgressBar barra = findViewById(R.id.progressBar);
+
+
+        new Thread(
+                new Runnable() {
+                    @Override
+                    public void run() {
+
+                        int progreso = 0;
+                        while (progreso <= 100) {
+                            barra.setProgress(progreso);
+                            Log.e("msg", progreso + "%");
+
+                            progreso++;
+
+                            try {
+                                sleep(10);
+                            } catch (InterruptedException e) {
+                                throw new RuntimeException(e);
+                            }
+                        }
+
+                        /*do{
+                            barra.setProgress(progreso);
+                            Log.e("msg", progreso + "%");
+
+                            progreso++;
+
+                            try {
+                                sleep(50);
+                            } catch (InterruptedException e) {
+                                throw new RuntimeException(e);
+                            }
+                        } while(progreso <= 100);*/
+
+                    }
+                }
+        ).start();
 
     }
 
@@ -80,8 +128,10 @@ public class MainActivity extends AppCompatActivity {
     private void jugada(int fila, int columna) {
         turno = !turno; //invertimos el valor de turno
 
-        if (turno) jugador = "X";
-        else jugador = "O";
+        if (turno)
+            jugador = "X";
+        else
+            jugador = "O";
 
         tablero[fila][columna] = jugador;
 
@@ -142,7 +192,8 @@ public class MainActivity extends AppCompatActivity {
             for (int col = 0; col < t; col++) {
                 validarJugada(fila, col);
             }
-            if (!ganador.isEmpty()) break;
+            if (!ganador.isEmpty())
+                break;
             contX = 0;
             contO = 0;
         }
@@ -153,7 +204,8 @@ public class MainActivity extends AppCompatActivity {
                 for (int fila = 0; fila < t; fila++) {
                     validarJugada(fila, col);
                 }
-                if (!ganador.isEmpty()) break;
+                if (!ganador.isEmpty())
+                    break;
                 contX = 0;
                 contO = 0;
             }
@@ -173,7 +225,7 @@ public class MainActivity extends AppCompatActivity {
         if (ganador == "") {
             //buscar 3 en línea en la diagonal 2
             int fila = 0;
-            for (int col = t-1; col >= 0; col--) {
+            for (int col = t - 1; col >= 0; col--) {
                 validarJugada(fila, col);
                 fila++;
             }
@@ -187,7 +239,7 @@ public class MainActivity extends AppCompatActivity {
                     "El ganador es: " + ganador,
                     Toast.LENGTH_LONG
             ).show();
-            ganador = "";
+            //ganador = "";
         }
     }
 
@@ -195,12 +247,16 @@ public class MainActivity extends AppCompatActivity {
         String valor = tablero[fila][col];
 
         if (!valor.isEmpty()) {
-            if (valor == "X") contX++;
-            if (valor == "O") contO++;
+            if (valor == "X")
+                contX++;
+            if (valor == "O")
+                contO++;
         }
 
-        if (contX == t) ganador = "X";
-        if (contO == t) ganador = "O";
+        if (contX == t)
+            ganador = "X";
+        if (contO == t)
+            ganador = "O";
     }
 
 }

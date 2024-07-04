@@ -190,4 +190,15 @@
         app:layout_constraintBottom_toTopOf="@+id/boton01"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="232dp"
+        android:layout_height="18dp"
+        android:layout_margin="30dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iniciarPartida" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
